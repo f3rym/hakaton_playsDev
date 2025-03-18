@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CPU Load Monitor</title>
+</head>
+<body>
+    <h1>Загрузка CPU: <span id="cpu-load">0</span>%</h1>
+
+    <script>
+        const cpuElement = document.getElementById('cpu-load');
+
+        // Подключение к SSE-потоку
+        const eventSource = new EventSource('/cpu-stream');
+
+        eventSource.onmessage = (event) => {
+            cpuElement.textContent = event.data;
+        };
+
+        eventSource.onerror = (error) => {
+            console.error('Ошибка подключения:', error);
+            eventSource.close();
+        };
+    </script>
+</body>
+</html>
